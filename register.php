@@ -14,7 +14,7 @@ $confirmEmail = "";
 $password = "";
 $confirmPassword = "";
 $signupDate = "";
-$error_array = array();
+$signupLogs = array();
 
 if(isset($_POST['register_button'])) {
 
@@ -72,42 +72,42 @@ if(isset($_POST['register_button'])) {
             // number of rows returned
             $numRows = mysqli_num_rows($emailCheck);
             if($numRows > 0) {
-                array_push($error_array, "Email already in use, please use a different email<br>");
+                array_push($signupLogs, "Email already in use, please use a different email<br>");
             }
         }
         else {
-            array_push($error_array, "Invalid email format<br>");
+            array_push($signupLogs, "Invalid email format<br>");
         }
 
     }
     else {
-        array_push($error_array, "Emails don't match<br>");
+        array_push($signupLogs, "Emails don't match<br>");
     }
 
     // field validity checks
     if(strlen($firstName) > 25 || strlen($firstName) < 2) {
-        array_push($error_array, "First name must be between 2 and 25 characters<br>");
+        array_push($signupLogs, "First name must be between 2 and 25 characters<br>");
     }
     
     if(strlen($lastName) > 25 || strlen($lastName) < 2) {
-        array_push($error_array, "Last name must be between 2 and 25 characters<br>");
+        array_push($signupLogs, "Last name must be between 2 and 25 characters<br>");
     }
 
     
     if($password != $confirmPassword) {
-        array_push($error_array, "Passwords don't match<br>");
+        array_push($signupLogs, "Passwords don't match<br>");
     }
     else {
         if(preg_match('/[^A-Za-z0-9]/', $password)) {
-            array_push($error_array, "Password can only contain alphabets and numbers<br>");
+            array_push($signupLogs, "Password can only contain alphabets and numbers<br>");
         }
     }
 
     if(strlen($password) > 30 || strlen($password) < 5) {
-        array_push($error_array, "Password must be between 5 and 30 characters<br>");
+        array_push($signupLogs, "Password must be between 5 and 30 characters<br>");
     }
     
-    if(empty($error_array)) {
+    if(empty($signupLogs)) {
         // encrypt the password before sending it to the database
         $password = md5($password);
 
@@ -127,7 +127,17 @@ if(isset($_POST['register_button'])) {
         // default profile pic
         $profilePic = "assets/images/profile_pics/defaults/default.jpg";
         
-        $query = mysqli_query($connection, "INSERT INTO users VALUES ('', '$firstName', '$lastName', '$username', '$email', '$password', '$signupDate', '$profilePic', '0', '0', 'no', ',')");
+        $registerUser = mysqli_query($connection, "INSERT INTO users VALUES ('', '$firstName', '$lastName', '$username', '$email', '$password', '$signupDate', '$profilePic', '0', '0', 'no', ',')");
+
+        array_push($signupLogs, "<span style='color: #14C800;'> Sign Up Complete</span><br>");
+
+        // clear session variables
+        $_SESSION['reg_firstname'] = "";
+        $_SESSION['reg_lastname'] = "";
+        $_SESSION['reg_email'] = "";
+        $_SESSION['reg_confirmemail'] = "";
+        $_SESSION['reg_password'] = "";
+        $_SESSION['reg_confirmpassword'] = "";
     }
 }
 ?>
@@ -144,7 +154,7 @@ if(isset($_POST['register_button'])) {
         }
         ?>" required>
         <br>
-        <?php if(in_array("First name must be between 2 and 25 characters<br>", $error_array)) {
+        <?php if(in_array("First name must be between 2 and 25 characters<br>", $signupLogs)) {
             echo "First name must be between 2 and 25 characters<br>";
         }
         ?>
@@ -155,7 +165,7 @@ if(isset($_POST['register_button'])) {
         }
         ?>" required>
         <br>
-        <?php if(in_array("Last name must be between 2 and 25 characters<br>", $error_array)) {
+        <?php if(in_array("Last name must be between 2 and 25 characters<br>", $signupLogs)) {
             echo "Last name must be between 2 and 25 characters<br>";
         }
         ?>
@@ -173,13 +183,13 @@ if(isset($_POST['register_button'])) {
         ?>" required>
         <br>
         <?php 
-        if(in_array("Email already in use, please use a different email<br>", $error_array)) {
+        if(in_array("Email already in use, please use a different email<br>", $signupLogs)) {
             echo "Email already in use, please use a different email<br>";
         }
-        else if(in_array("Invalid email format<br>", $error_array)) {
+        else if(in_array("Invalid email format<br>", $signupLogs)) {
             echo "Invalid email format<br>";
         }
-        else if(in_array("Emails don't match<br>", $error_array)) {
+        else if(in_array("Emails don't match<br>", $signupLogs)) {
             echo "Emails don't match<br>";
         }
         ?>
@@ -189,18 +199,25 @@ if(isset($_POST['register_button'])) {
         <input type="password" name="reg_confirmpassword" placeholder="Confirm Password" required>
         <br>
         <?php 
-        if(in_array("Passwords don't match<br>", $error_array)) {
+        if(in_array("Passwords don't match<br>", $signupLogs)) {
             echo "Passwords don't match<br>";
         }
-        else if(in_array("Password can only contain alphabets and numbers<br>", $error_array)) {
+        else if(in_array("Password can only contain alphabets and numbers<br>", $signupLogs)) {
             echo "Password can only contain alphabets and numbers<br>";
         }
-        else if(in_array("Password must be between 5 and 30 characters<br>", $error_array)) {
+        else if(in_array("Password must be between 5 and 30 characters<br>", $signupLogs)) {
             echo "Password must be between 5 and 30 characters<br>";
         }
         ?>
 
-        <input type="submit" name="register_button" value="Register">
+        <input type="submit" name="register_button" value="Sign Up">
+        <br>
+
+       <?php 
+        if(in_array("<span style='color: #14C800;'> Sign Up Complete</span><br>", $signupLogs)) {
+            echo "<span style='color: #0000ff;'> Sign Up Complete</span><br>";
+        }
+        ?>
     </form>
 </body>
 </html>
