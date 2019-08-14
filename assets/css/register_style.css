@@ -1,0 +1,71 @@
+@font-face {
+    font-family: 'FiraSans-Light';
+    src: url('../fonts/FiraSans-Light.otf')
+}
+
+@font-face {
+    font-family: 'FiraSans-Light';
+    src: url('../fonts/FiraSans-Bold.otf')
+}
+
+html, body {
+    height: 100%;
+    min-height: 100%;
+}
+
+form {
+    text-align: center;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper {
+    background-image: url("../images/backgrounds/main.jpg");
+    background-size: 100%;
+    width: 100%;
+    height: 100%;
+    min-width: 950px;
+    min-height: 650px;
+    background-repeat: no-repeat;
+    object-fit: contain;
+}
+
+.login_box {
+    font-family: 'FiraSans-Light', sans-serif;
+    position: relative;
+    margin-right: auto;
+    margin-left: auto;
+    top: 7%;
+    width: 35%;
+    background-color: white;
+    border: 1px solid #ededed;
+    border-radius: 7px;
+    padding: 5px;
+    opacity: .98;
+}
+
+.login_header {
+    font-family: 'FiraSans-Light', sans-serif;
+    text-align: center;
+    width: 100%;
+    height: 90px;
+    background-color: #0f3657;
+    color: white;
+    border-radius: 7px;
+}
+
+.login_header h1 {
+    font-family: 'FiraSans-Bold', sans-serif;
+    color: #8ab2bc;
+    margin-top: 0;
+    margin-bottom: 2%;
+    text-shadow: white 0.5px 0.5px 0px;
+    font-size: 250%;
+}
+
+.login_content {
+    margin-top: 2%;
+}
