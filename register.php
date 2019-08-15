@@ -8,8 +8,23 @@ require 'includes/form_handlers/login_handler.php';
 <head>
     <title>Welcome to Friendsbook</title>
     <link rel="stylesheet" type="text/css" href="assets/css/register_style.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="assets/js/register.js"></script>
 </head>
 <body>
+    <?php
+    if(isset($_POST['register_button'])) {
+        echo '
+        <script>
+        $(document).ready(function() {
+            $("#login_content").hide();
+            $("#signup_content").show();
+        });
+        </script>
+        ';
+    }
+    ?>
     <div class="wrapper">
         
         <div class = "login_box">
@@ -19,21 +34,28 @@ require 'includes/form_handlers/login_handler.php';
                 
             </div>
 
-                <div class="login_content">
+            <div id="login_content">
                 <form action="register.php" method = "POST">
                     <input type="email" name="loginEmail" placeholder="Email" value="<?php 
                     if(isset($_SESSION['loginEmail'])) {
                         echo $_SESSION['loginEmail'];
                     }
                     ?>" required>
+                    <br>
                     <input type="password" name="loginPassword" placeholder="Password">
-                    <input type="submit" name="login_button" value="Log In">
+                    <br>
                     <?php if(in_array("Email or Password Incorrect<br>", $signupLogs)) {
                         echo "Email or Password Incorrect<br>";
                     }
                     ?>
+                    <br>
+                    <input type="submit" name="login_button" value="Log In">
+                    <br>
+                    <a href="#" id="signup" class="signup">Need an account? Register here</a>
                 </form>
+            </div>
 
+            <div id="signup_content">
                 <form action="register.php" method="POST">
                     <input type="text" name="reg_firstname" placeholder="First Name" value="<?php 
                     if(isset($_SESSION['reg_firstname'])) {
@@ -100,11 +122,12 @@ require 'includes/form_handlers/login_handler.php';
                     <input type="submit" name="register_button" value="Sign Up">
                     <br>
 
-                <?php 
+                    <?php 
                     if(in_array("<span style='color: #14C800;'> Sign Up Complete</span><br>", $signupLogs)) {
                         echo "<span style='color: #0000ff;'> Sign Up Complete</span><br>";
                     }
                     ?>
+                    <a href="#" id="signin" class="signup">Already have an account? Sign in here</a>
                 </form>
             </div>
         </div>
