@@ -1,6 +1,6 @@
 <?php
 include("includes/header.php");
 ?>
-Hello Kandarp and Anshul!!
+Hello Kandarp and Rudra!!
 </body>
 </html>
